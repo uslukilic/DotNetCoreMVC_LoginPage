@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCLoginPage.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 namespace MVCLoginPage.Controllers
@@ -15,39 +16,55 @@ namespace MVCLoginPage.Controllers
         {
             return View();
         }
-        /* public List<UserModel> PutValue()
-         {
-             var users = new List<UserModel>
-             {
-                 new UserModel{Name="naveen",Password="kumar"},
-                 new UserModel{Name="mnaveen",Password="kumar"},
-             };
-             return users;
-         }*/
-        void connectionString()
-        {
-            con.ConnectionString = @"data source=DESKTOP-U3DPIO7\SQLEXPRESS; database=StudentLogin;user=sa;pwd=Sql@123$;";
-        }
+
         [HttpPost]
         public IActionResult Verify(Account acc)
         {
-            connectionString();
+            // var users = PutValue();
+            // foreach (var user in users)
+            // {
+            //     if (user.Password == acc.Password)
+            //         return View(user);
+            // }
+
+             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from tbl_login where username='" + acc.Name + "' and password='" + acc.Password + "'";
+            com.CommandText = "select * from Users where Name='" + acc.Name + "' and password='" + acc.Password + "'";
             dr = com.ExecuteReader();
             //var u = PutValue();
             if (dr.Read())
             {
                 con.Close();
-                return View("Create");
+
+                return View("Verify");
             }
             else
             {
                 con.Close();
-                return View("Error");
+                // throw Exception();
+                // Console.Writeline("Hata oldu yaw");
+                ViewBag.Message="Kullanıcı adı veya şifre yanlış.";
+                return View("Login");
             }
 
+            // return BadRequest();
         }
+
+        // private List<UserModel> PutValue()
+        // {
+        //     var users = new List<UserModel>
+        //     {
+        //         new UserModel{Name="admin",Password="123456"},
+        //         new UserModel{Name="semih",Password="123456"},
+        //     };
+        //     return users;
+        // }
+
+        void connectionString()
+        {
+            con.ConnectionString = "Server=SEMIH; database=penetration;Trusted_Connection=True;user=SEMIH/usluk";
+        }
+        
     }
 }
