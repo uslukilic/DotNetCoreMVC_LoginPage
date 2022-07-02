@@ -18,7 +18,7 @@ namespace MVCLoginPage.Controllers
         }
 
         [HttpPost]
-        public IActionResult Verify(Account acc)
+        public IActionResult Account(Account acc)
         {
             // var users = PutValue();
             // foreach (var user in users)
@@ -27,7 +27,7 @@ namespace MVCLoginPage.Controllers
             //         return View(user);
             // }
 
-             connectionString();
+            connectionString();
             con.Open();
             com.Connection = con;
             com.CommandText = "select * from Users where Name='" + acc.Name + "' and password='" + acc.Password + "'";
@@ -35,20 +35,25 @@ namespace MVCLoginPage.Controllers
             //var u = PutValue();
             if (dr.Read())
             {
+
+                //dr.GetString(3)
+                if (dr.GetString(3)=="1")
+                {
+                    return View("Admin");
+                }
+                //Console.WriteLine("{0}\t{1}\t{2}\t{3}", dr.GetInt32(0),
+                //    dr.GetString(1), dr.GetString(2), dr.GetString(3));
+
                 con.Close();
 
-                return View("Verify");
+                return View("User");
             }
             else
             {
                 con.Close();
-                // throw Exception();
-                // Console.Writeline("Hata oldu yaw");
                 ViewBag.Message="Kullanıcı adı veya şifre yanlış.";
                 return View("Login");
             }
-
-            // return BadRequest();
         }
 
         // private List<UserModel> PutValue()
@@ -63,7 +68,7 @@ namespace MVCLoginPage.Controllers
 
         void connectionString()
         {
-            con.ConnectionString = "Server=SEMIH; database=penetration;Trusted_Connection=True;user=SEMIH/usluk";
+            con.ConnectionString = "Server=DESKTOP-GNT513T; database=penetration;Trusted_Connection=True;user=DESKTOP-GNT513T/Abdullah Taha";
         }
         
     }
